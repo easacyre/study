@@ -60,7 +60,7 @@ public class EventController {
         EventResource eventResource = new EventResource(event);
         eventResource.add(linkTo(EventController.class).withRel("query-events"));
         eventResource.add(selfLinkBuilder.withRel("update-event"));
-        eventResource.add(new Link("/docs/index.html#resources-events-create").withRel("profile"));
+        eventResource.add(Link.of("/docs/index.html#resources-events-create").withRel("profile"));
         return ResponseEntity.created(createdUri).body(eventResource);
     }
 
@@ -70,7 +70,7 @@ public class EventController {
                                       @CurrentUser Account account) {
         Page<Event> page = this.eventRepository.findAll(pageable);
         var pagedResources = assembler.toModel(page, e -> new EventResource(e));
-        pagedResources.add(new Link("/docs/index.html#resources-events-list").withRel("profile"));
+        pagedResources.add(Link.of("/docs/index.html#resources-events-list").withRel("profile"));
         if (account != null) {
             pagedResources.add(linkTo(EventController.class).withRel("create-event"));
         }
@@ -87,7 +87,7 @@ public class EventController {
 
         Event event = optionalEvent.get();
         EventResource eventResource = new EventResource(event);
-        eventResource.add(new Link("/docs/index.html#resources-events-get").withRel("profile"));
+        eventResource.add(Link.of("/docs/index.html#resources-events-get").withRel("profile"));
         if (event.getManager().equals(currentUser)) {
             eventResource.add(linkTo(EventController.class).slash(event.getId()).withRel("update-event"));
         }
@@ -123,13 +123,13 @@ public class EventController {
         Event savedEvent = this.eventRepository.save(existingEvent);
 
         EventResource eventResource = new EventResource(savedEvent);
-        eventResource.add(new Link("/docs/index.html#resources-events-update").withRel("profile"));
+        eventResource.add(Link.of("/docs/index.html#resources-events-update").withRel("profile"));
 
         return ResponseEntity.ok(eventResource);
     }
 
     private ResponseEntity badRequest(Errors errors) {
-        return ResponseEntity.badRequest().body(new ErrorsResource(errors));
+        return ResponseEntity.badRequest().body(ErrorsResource.modelOf(errors));
     }
 
 }

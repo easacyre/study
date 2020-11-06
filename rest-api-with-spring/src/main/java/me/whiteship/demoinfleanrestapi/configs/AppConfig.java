@@ -1,7 +1,6 @@
 package me.whiteship.demoinfleanrestapi.configs;
 
 import me.whiteship.demoinfleanrestapi.accounts.Account;
-import me.whiteship.demoinfleanrestapi.accounts.AccountRepository;
 import me.whiteship.demoinfleanrestapi.accounts.AccountRole;
 import me.whiteship.demoinfleanrestapi.accounts.AccountService;
 import me.whiteship.demoinfleanrestapi.common.AppProperties;
@@ -40,7 +39,7 @@ public class AppConfig {
             AppProperties appProperties;
 
             @Override
-            public void run(ApplicationArguments args) throws Exception {
+            public void run(ApplicationArguments args) {
                 Account admin = Account.builder()
                         .email(appProperties.getAdminUsername())
                         .password(appProperties.getAdminPassword())
